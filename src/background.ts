@@ -3,8 +3,24 @@ import { chunk } from 'lodash-es';
 import { collectTabs, mergeCategories, organizeTabs } from './categories';
 import { analyzeTabs } from './openai';
 
+const mapTabIds = (tabs: chrome.tabs.Tab[]) => (
+  tabs
+    .map((tab) => tab.id)
+    .filter((id): id is number => !!id)
+);
+
 chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
-  if (message.action === 'action-ai') {
+  const forCurrentWindow = false;
+
+  if (message.action === 'action-closeblanks') {
+    chrome.tabs.query({ currentWindow: forCurrentWindow }, (tabs) => {
+      const blankTabs = tabs.filter((tab) => tab.url === 'chrome://newtab/');
+
+      console.log(`Found ${blankTabs.length} blank tabs, closing`);
+
+      chrome.tabs.remove(mapTabIds(blankTabs));
+    });
+  } else if (message.action === 'action-ai') {
     await organizeViaAi();
   }
 });
