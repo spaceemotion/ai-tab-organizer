@@ -5,6 +5,7 @@
     "build": "tsup"
   },
   "dependencies": {
+    "ky": "^0.33.3",
     "lodash-es": "^4.17.21",
     "zod": "^3.21.4",
     "zod-to-json-schema": "^3.21.4"

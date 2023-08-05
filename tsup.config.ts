@@ -11,6 +11,7 @@ export default defineConfig({
     'zod',
     'zod-to-json-schema',
     'lodash-es',
+    'ky',
   ],
 
   platform: 'browser',

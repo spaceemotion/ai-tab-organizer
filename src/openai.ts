@@ -1,6 +1,7 @@
 import { omit } from "lodash-es";
 import { z } from "zod";
 import zodToJsonSchemaImpl from 'zod-to-json-schema';
+import ky from 'ky';
 
 import type { TabItem } from "./categories";
 
@@ -26,13 +27,17 @@ const SetTabCategoriesSchema = z.object({
 export const analyzeTabs = async (apiKey: string, tabs: TabItem[]): Promise<Record<string, number[]>> => {
   try {
     // send the request containing the messages to the OpenAI API
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
+    const response = await ky.post('https://api.openai.com/v1/chat/completions', {
+      retry: {
+        limit: 3,
+        maxRetryAfter: 500,
+      },
+      timeout: 1000 * 59, // almost a minute
       headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${apiKey}`
       },
-      body: JSON.stringify({
+      json: {
         model: "gpt-3.5-turbo",
         temperature: 0.75,
         messages: [
@@ -64,15 +69,11 @@ In case a tab is too miscellaneous, use "Other".
             parameters: zodToJsonSchema(SetTabCategoriesSchema),
           },
         ],
-      })
+      },
     });
 
-    if (!response.ok) {
-      throw new Error(`Failed to fetch. Status code: ${response.status}`);
-    }
-
     // Get the data from the API response as parsed schema
-    const data = await response.json();
+    const data: any = await response.json();
     const calledFuntionRaw = data.choices[0]?.message?.function_call?.arguments ?? '';
     const calledFunction = SetTabCategoriesSchema.parse(JSON.parse(calledFuntionRaw));
 
@@ -82,8 +83,6 @@ In case a tab is too miscellaneous, use "Other".
       return acc;
     }, {} as Record<string, number[]>);
   } catch (error) {
-    console.error(error);
+    throw error;
   }
-
-  return {};
 };
