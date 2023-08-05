@@ -12,6 +12,7 @@ Organizes all tabs across windows into AI-generated groups. Uses your own OpenAI
 - **AI Organize:** Organizes all tabs across windows into AI-generated groups
 - **Deduplicate Tabs:** Closes all duplicate tabs
 - **Close Blank Pages:** Closes all tabs that are blank pages (e.g. `about:blank`)
+- **Sort Tabs by URL:** Sorts all tabs by URL, even inside groups
 
 ## Local Install
 1. Download `.zip` file from https://github.com/spaceemotion/ai-tab-organizer/releases/latest
