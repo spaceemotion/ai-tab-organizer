@@ -11,6 +11,7 @@
     "tabGroups",
     "storage"
   ],
+  "incognito": "split",
   "background": {
     "service_worker": "background.js"
   },
