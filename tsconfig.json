@@ -10,6 +10,7 @@
     "skipLibCheck": true,
     "strict": true,
     "moduleResolution": "node",
-    "baseUrl": "."
-  }
+    "baseUrl": ".",
+  },
+  "exclude": ["node_modules", "build", "dist"]
 }

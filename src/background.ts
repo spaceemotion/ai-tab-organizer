@@ -3,7 +3,13 @@ import { chunk } from 'lodash-es';
 import { collectTabs, mergeCategories, organizeTabs } from './categories';
 import { analyzeTabs } from './openai';
 
-chrome.action.onClicked.addListener(async () => {
+chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
+  if (message.action === 'action-ai') {
+    await organizeViaAi();
+  }
+});
+
+const organizeViaAi = async () => {
   const { apiKey, aiModel } = await chrome.storage.sync.get({
     apiKey: '',
     aiModel: '',
@@ -55,4 +61,4 @@ chrome.action.onClicked.addListener(async () => {
 
   organizeTabs(merged);
   console.log("Done");
-});
+};

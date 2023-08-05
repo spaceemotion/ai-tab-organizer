@@ -22,6 +22,7 @@ function copyRecursiveSync(src: string, dest: string) {
 export default defineConfig({
   entry: [
     'src/background.ts',
+    'src/popup.ts',
     'src/options.ts',
     'src/main.css',
   ],
