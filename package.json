@@ -1,6 +1,6 @@
 {
   "name": "ai-tab-organizer",
-  "version": "1.1",
+  "version": "1.2",
   "scripts": {
     "build": "tsup",
     "watch": "tsup -- --dev"
