@@ -1,6 +1,23 @@
 import { defineConfig } from 'tsup'
+import { existsSync, statSync, mkdirSync, readdirSync, copyFileSync } from "node:fs";
+import { join } from 'node:path';
 
 const isDev = process.argv.includes('--dev');
+
+function copyRecursiveSync(src: string, dest: string) {
+  const exists = existsSync(src);
+  const stats = exists && statSync(src);
+  const isDirectory = stats && stats.isDirectory();
+
+  if (exists && isDirectory) {
+    mkdirSync(dest, { recursive: true });
+    readdirSync(src).forEach(childItemName => {
+      copyRecursiveSync(join(src, childItemName), join(dest, childItemName));
+    });
+  } else {
+    copyFileSync(src, dest);
+  }
+}
 
 export default defineConfig({
   entry: [
@@ -9,10 +26,7 @@ export default defineConfig({
     'src/main.css',
   ],
 
-  watch: isDev && [
-    'src/**/*',
-    'public/**/*',
-  ],
+  watch: isDev,
 
   publicDir: 'public',
 
@@ -31,4 +45,10 @@ export default defineConfig({
 
   sourcemap: isDev,
   minify: !isDev,
+
+
+  // WORKAROUND for https://github.com/egoist/tsup/issues/831
+  onSuccess: isDev ? async () => {
+    copyRecursiveSync('public', 'dist');
+  } : undefined,
 })
