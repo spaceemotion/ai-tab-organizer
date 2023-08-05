@@ -22,5 +22,5 @@ chrome.action.onClicked.addListener(async () => {
   const merged = mergeCategories(categories);
   console.log(merged);
 
-  // organizeTabs(categorizedTabs);
+  organizeTabs(merged);
 });

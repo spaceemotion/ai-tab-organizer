@@ -27,6 +27,10 @@ export const mergeCategories = (categories: Record<string, number[]>[]): Record<
 
   for (const category of categories) {
     for (const [name, tabs] of Object.entries(category)) {
+      if (tabs.length === 0) {
+        continue;
+      }
+
       if (!merged[name]) {
         merged[name] = [];
       }
@@ -38,6 +42,9 @@ export const mergeCategories = (categories: Record<string, number[]>[]): Record<
   return merged;
 };
 
-export const organizeTabs = (categorizedTabs: { category: string, tabs: number[] }): void => {
-  // Logic to organize tabs into groups based on categories
+export const organizeTabs = async (categorizedTabs: Record<string, number[]>): Promise<void> => {
+  await Promise.all(Object.entries(categorizedTabs).map(async ([name, tabIds]) => {
+    const group = await chrome.tabs.group({ tabIds });
+    await chrome.tabGroups.update(group, { title: name });
+  }));
 };
