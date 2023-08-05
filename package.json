@@ -1,0 +1,18 @@
+{
+  "name": "ai-tab-organizer",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "tsup"
+  },
+  "dependencies": {
+    "lodash-es": "^4.17.21",
+    "zod": "^3.21.4",
+    "zod-to-json-schema": "^3.21.4"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.243",
+    "@types/lodash-es": "^4.17.8",
+    "tsup": "^7.2.0",
+    "typescript": "^5.1.0"
+  }
+}
