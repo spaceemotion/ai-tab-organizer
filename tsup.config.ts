@@ -44,7 +44,7 @@ export default defineConfig({
   splitting: false,
   clean: true,
 
-  sourcemap: isDev,
+  sourcemap: false,
   minify: !isDev,
 
 
