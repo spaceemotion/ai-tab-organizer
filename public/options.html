@@ -2,27 +2,25 @@
 <html>
   <head>
     <title>AI Tab Organizer Extension Options</title>
-    <style>
-      .box {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-      }
-    </style>
+    <link rel="stylesheet" href="main.css" />
   </head>
-  <body>
-    <div class="box">
+  <body class="p-6">
+    <div class="flex flex-col gap-3">
       <label>
-        OpenAI API Key:
-        <input type="input" id="api-key" />
+        <div class="mb-2">
+          OpenAI API Key:
+        </div>
+        <input type="input" id="api-key" class="form-input" />
       </label>
 
       <label>
-        AI Model Name:
-        <input type="input" id="ai-model" />
+        <div class="mb-2">
+          AI Model Name:
+        </div>
+        <input type="input" id="ai-model" class="form-input" />
       </label>
 
-      <button id="save">Save</button>
+      <button id="save" class="form-button">Save</button>
     </div>
 
     <script src="options.js"></script>

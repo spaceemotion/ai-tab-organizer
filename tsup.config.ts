@@ -5,6 +5,7 @@ export default defineConfig({
     'src/background.ts',
     'src/options.ts',
   ],
+
   publicDir: 'public',
 
   noExternal: [
