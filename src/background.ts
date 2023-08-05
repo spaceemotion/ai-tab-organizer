@@ -4,7 +4,10 @@ import { collectTabs, mergeCategories, organizeTabs } from './categories';
 import { analyzeTabs } from './openai';
 
 chrome.action.onClicked.addListener(async () => {
-  const { apiKey } = await chrome.storage.sync.get({ apiKey: '' });
+  const { apiKey, aiModel } = await chrome.storage.sync.get({
+    apiKey: '',
+    aiModel: '',
+  });
 
   if (!apiKey) {
     console.error('No API key found');
@@ -15,7 +18,10 @@ chrome.action.onClicked.addListener(async () => {
   const chunks = chunk(tabs, 60);
 
   const categories = await Promise.all(
-    chunks.map((chunk) => analyzeTabs(apiKey, chunk)),
+    chunks.map((chunk) => analyzeTabs({
+      model: aiModel,
+      apiKey,
+    }, chunk)),
   );
 
   console.log("Got all results, now merging");

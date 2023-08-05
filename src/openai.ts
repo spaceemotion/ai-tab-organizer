@@ -24,7 +24,12 @@ const SetTabCategoriesSchema = z.object({
   })),
 });
 
-export const analyzeTabs = async (apiKey: string, tabs: TabItem[]): Promise<Record<string, number[]>> => {
+interface AiOptions {
+  model?: string;
+  apiKey: string;
+}
+
+export const analyzeTabs = async (options: AiOptions, tabs: TabItem[]): Promise<Record<string, number[]>> => {
   try {
     // send the request containing the messages to the OpenAI API
     const response = await ky.post('https://api.openai.com/v1/chat/completions', {
@@ -35,10 +40,10 @@ export const analyzeTabs = async (apiKey: string, tabs: TabItem[]): Promise<Reco
       timeout: 1000 * 59, // almost a minute
       headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiKey}`
+          'Authorization': `Bearer ${options.apiKey}`
       },
       json: {
-        model: "gpt-3.5-turbo",
+        model: options.model ?? 'gpt-3.5-turbo',
         temperature: 0.7,
         messages: [
           {
@@ -53,7 +58,7 @@ Do not be too broad or generic.
 In case a tab is too miscellaneous, use "Other".
 Limit yourself to six categories maximum.
 At least 3 tabs have to be in each category.
-            `,
+            `.trim(),
           },
           {
             "role": "user",
