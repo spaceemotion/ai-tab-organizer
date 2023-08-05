@@ -27,15 +27,17 @@ export const mergeCategories = (categories: Record<string, number[]>[]): Record<
 
   for (const category of categories) {
     for (const [name, tabs] of Object.entries(category)) {
-      if (tabs.length === 0) {
+      const validIds = tabs.filter((id) => Number.isSafeInteger(id) && id >= 0);
+
+      if (validIds.length === 0) {
         continue;
       }
 
       if (!merged[name]) {
-        merged[name] = [];
+        merged[name] = validIds;
+      } else {
+        merged[name].push(...validIds);
       }
-
-      merged[name].push(...tabs);
     }
   }
 
@@ -43,8 +45,21 @@ export const mergeCategories = (categories: Record<string, number[]>[]): Record<
 };
 
 export const organizeTabs = async (categorizedTabs: Record<string, number[]>): Promise<void> => {
+  const newWindow = await chrome.windows.create();
+
   await Promise.all(Object.entries(categorizedTabs).map(async ([name, tabIds]) => {
-    const group = await chrome.tabs.group({ tabIds });
-    await chrome.tabGroups.update(group, { title: name });
+    // Create a new tab group for each category
+    const group = await chrome.tabs.group({
+      tabIds,
+      createProperties: {
+        windowId: newWindow.id,
+      },
+    });
+
+    // Set the title of the group to the category name
+    await chrome.tabGroups.update(group, {
+      title: name,
+      collapsed: true,
+    });
   }));
 };
