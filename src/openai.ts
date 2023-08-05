@@ -39,7 +39,7 @@ export const analyzeTabs = async (apiKey: string, tabs: TabItem[]): Promise<Reco
       },
       json: {
         model: "gpt-3.5-turbo",
-        temperature: 0.75,
+        temperature: 0.7,
         messages: [
           {
             "role": "system",
@@ -47,11 +47,12 @@ export const analyzeTabs = async (apiKey: string, tabs: TabItem[]): Promise<Reco
 You are a browser tab categorizer.
 You will be given a list of tabs, each with a domain and their title.
 Organize the whole list of tabs into groups based on their topic.
-Do not be too broad or generic.
 Weigh the tab domains more into consideration than their title.
 In case many tabs share the same domain, find individual topics.
-Limit yourself to eight categories maximum.
+Do not be too broad or generic.
 In case a tab is too miscellaneous, use "Other".
+Limit yourself to six categories maximum.
+At least 3 tabs have to be in each category.
             `,
           },
           {
