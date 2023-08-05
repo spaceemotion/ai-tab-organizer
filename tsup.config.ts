@@ -1,9 +1,17 @@
 import { defineConfig } from 'tsup'
 
+const isDev = process.argv.includes('--dev');
+
 export default defineConfig({
   entry: [
     'src/background.ts',
     'src/options.ts',
+    'src/main.css',
+  ],
+
+  watch: isDev && [
+    'src/**/*',
+    'public/**/*',
   ],
 
   publicDir: 'public',
@@ -19,7 +27,8 @@ export default defineConfig({
 
   treeshake: true,
   splitting: false,
-  sourcemap: false,
   clean: true,
-  minify: true,
+
+  sourcemap: isDev,
+  minify: !isDev,
 })

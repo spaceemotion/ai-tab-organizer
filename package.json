@@ -2,12 +2,8 @@
   "name": "ai-tab-organizer",
   "version": "1.1",
   "scripts": {
-    "build": "npm run build:css && npm run build:ts",
-    "build:ts": "tsup",
-    "build:css": "npx tailwindcss -i ./src/main.css -o ./public/main.css --minify",
-    "watch": "concurrently -n ts,css -c blue,yellow npm:watch:ts npm:watch:css",
-    "watch:ts": "tsup --watch",
-    "watch:css": "npm run build:css -- --watch"
+    "build": "tsup",
+    "watch": "tsup -- --dev"
   },
   "dependencies": {
     "ky": "^0.33.3",
@@ -18,7 +14,7 @@
   "devDependencies": {
     "@types/chrome": "^0.0.243",
     "@types/lodash-es": "^4.17.8",
-    "concurrently": "^8.2.0",
+    "@types/node": "^20.4.8",
     "tailwindcss": "^3.3.3",
     "tsup": "^7.2.0",
     "typescript": "^5.1.0"
