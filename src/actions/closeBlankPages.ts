@@ -2,7 +2,11 @@ import { mapTabIds } from "../utils/tabs";
 
 export default async function closeBlankPages() {
   const tabs = await chrome.tabs.query({});
-  const blankTabs = tabs.filter((tab) => tab.url === 'chrome://newtab/');
+  const blankTabs = tabs.filter((tab) => (
+    tab.url === 'chrome://newtab/' ||
+    tab.url === 'about:blank' ||
+    tab.url === 'edge://newtab/'
+  ));
 
   console.log(
     `Found ${blankTabs.length} blank tabs, closing`,
