@@ -44,8 +44,8 @@ export const mergeCategories = (categories: Record<string, number[]>[]): Record<
   return merged;
 };
 
-export const organizeTabs = async (categorizedTabs: Record<string, number[]>): Promise<void> => {
-  const newWindow = await chrome.windows.create();
+export const organizeTabs = async (categorizedTabs: Record<string, number[]>, window?: chrome.windows.Window): Promise<void> => {
+  const newWindow = window ?? await chrome.windows.create();
 
   await Promise.all(Object.entries(categorizedTabs).map(async ([name, tabIds]) => {
     // Create a new tab group for each category

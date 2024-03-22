@@ -8,3 +8,4 @@ registerAction('action-ai');
 registerAction('action-deduplicate');
 registerAction('action-closeblanks');
 registerAction('action-sort');
+registerAction('action-group-tlds');
